@@ -2,6 +2,7 @@
 
 namespace Sunnysideup\UnderConstruction\Extensions;
 
+use SilverStripe\Control\Director;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\FieldList;
 use Page;
@@ -20,7 +21,7 @@ class SiteConfigExtension extends DataExtension
     private const FILE_NAME = 'offline.php';
 
     private static $db = [
-        'UnderConstructionUntil' => 'Int',
+        'UnderConstructionMinutesOffline' => 'Int',
         'UnderConstructionTitle' => 'Varchar',
         'UnderConstructionSubTitle' => 'Varchar',
     ];
@@ -36,13 +37,13 @@ class SiteConfigExtension extends DataExtension
         $fields->addFieldsToTab(
             'Root.Offline',
             [
-                $owner->dataFieldByName('UnderConstructionUntil'),
+                $owner->dataFieldByName('UnderConstructionMinutesOffline'),
                 $owner->dataFieldByName('UnderConstructionTitle'),
                 $owner->dataFieldByName('UnderConstructionSubTitle'),
                 $owner->dataFieldByName('BackgroundImage'),
                 ReadonlyField::create(
                     'UnderConstructionPublicUrl',
-                    'View File',
+                    'Preview',
                     DBField::create_field(
                         'HTMLText',
                         '<a href="'.$publicUrl.'">'.$publicUrl.'</a>'
@@ -66,6 +67,7 @@ class SiteConfigExtension extends DataExtension
     {
         parent::onAfterWrite();
         $html = $this->owner->renderWith('Sunnysideup\\UnderConstruction\\UnderConstruction');
+        $publicDir = Director::baseFolder();
         $fileName = $publicDir. '/' . self::FILE_NAME ;
         file_put_contents($fileName, $html);
         $imageName = $publicDir. '/' .  $this->UnderConstructionImageName();

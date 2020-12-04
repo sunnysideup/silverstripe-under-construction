@@ -72,7 +72,7 @@ header('Retry-After: 60'); //60 seconds
     // Update the count down every 1 second
     const startNow = new Date();
     //todo: set universal start time
-    var countDownDate = new Date(startNow.getTime() + ((1000 * 60 * $UnderConstructionUntil))).getTime();
+    var countDownDate = new Date(startNow.getTime() + ((1000 * 60 * $UnderConstructionMinutesOffline))).getTime();
 
     const countdownfunction = window.setInterval(
         function() {
