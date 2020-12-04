@@ -2,18 +2,27 @@
 
 namespace Sunnysideup\UnderConstruction\Extensions;
 
+use SilverStripe\Control\Controller;
+use SilverStripe\Forms\TextField;
 use SilverStripe\Control\Director;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\FieldList;
 use Page;
 use Symbiote\SortableMenu\SortableMenuExtensionException;
+use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\ORM\FieldType\DBBoolean;
 use SilverStripe\ORM\DataList;
 use SilverStripe\Core\Config\Config;
+use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\CMS\Model\SiteTree;
+
+use SilverStripe\AssetAdmin\Forms\UploadField;
+
+use SilverStripe\Assets\Image;
+use SilverStripe\Assets\File;
 use Symbiote\Multisites\Model\Site;
 
 class SiteConfigExtension extends DataExtension
@@ -26,27 +35,58 @@ class SiteConfigExtension extends DataExtension
         'UnderConstructionSubTitle' => 'Varchar',
     ];
 
+    private static $defaults = [
+        'UnderConstructionMinutesOffline' => 20,
+        'UnderConstructionTitle' => 'Sorry, we are offline for an upgrade.',
+        'UnderConstructionSubTitle' => 'Please come back soon.',
+    ];
     private static $has_one = [
-        'UnderConstructionImage' => 'Image',
+        'UnderConstructionImage' => Image::class,
     ];
 
     public function updateCMSFields(FieldList $fields)
     {
         $owner = $this->owner;
-        $publicUrl = Director::AbsoluteLink(self::FILE_NAME);
         $fields->addFieldsToTab(
             'Root.Offline',
             [
-                $owner->dataFieldByName('UnderConstructionMinutesOffline'),
-                $owner->dataFieldByName('UnderConstructionTitle'),
-                $owner->dataFieldByName('UnderConstructionSubTitle'),
-                $owner->dataFieldByName('BackgroundImage'),
+                NumericField::create(
+                    'UnderConstructionMinutesOffline',
+                    'Minutes Offline'
+                ),
+                TextField::create(
+                    'UnderConstructionTitle',
+                    'Page Title'
+                ),
+                TextField::create(
+                    'UnderConstructionSubTitle',
+                    'Page Sub-Title'
+                ),
+                UploadField::create(
+                    'UnderConstructionImage',
+                    'Background Image'
+                )
+                    ->setFolderName('offline-images')
+                    ->setAllowedFileCategories('image')
+                    ->setIsMultiUpload(false),
+            ]
+        );
+        $fileName = Controller::join_links(Director::baseFolder(), self::FILE_NAME);
+        if(file_exists($fileName)) {
+            $publicUrl = Controller::join_links(Director::absoluteBaseURL() , self::FILE_NAME);
+            $html = '<a href="'.$publicUrl.'">'.$publicUrl.'</a>';
+        } else {
+            $html = 'Please complete details above and save to create your offline file.';
+        }
+        $fields->addFieldsToTab(
+            'Root.Offline',
+            [
                 ReadonlyField::create(
                     'UnderConstructionPublicUrl',
                     'Preview',
                     DBField::create_field(
                         'HTMLText',
-                        '<a href="'.$publicUrl.'">'.$publicUrl.'</a>'
+                        $html
                     )
                 ),
             ]
@@ -54,10 +94,11 @@ class SiteConfigExtension extends DataExtension
         return $fields;
     }
 
+
     public function UnderConstructionImageName() : string
     {
-        $name = $this->UnderConstructionImage();
-        $extension =  \array_pop(explode('.', $name));
+        $imageName = $this->owner->UnderConstructionImage()->getFilename();
+        $extension =  File::get_file_extension($imageName);
 
         return str_replace('.php', '.' . $extension, self::FILE_NAME);
     }
@@ -68,10 +109,20 @@ class SiteConfigExtension extends DataExtension
         parent::onAfterWrite();
         $html = $this->owner->renderWith('Sunnysideup\\UnderConstruction\\UnderConstruction');
         $publicDir = Director::baseFolder();
-        $fileName = $publicDir. '/' . self::FILE_NAME ;
+        $fileName = Controller::join_links($publicDir, self::FILE_NAME);
+        if(file_exists($fileName)) {
+            unlink($fileName);
+        }
         file_put_contents($fileName, $html);
-        $imageName = $publicDir. '/' .  $this->UnderConstructionImageName();
-        copy($this->UnderConstructionImage()->Link(), $publicDir . '/' . $imageName);
+        $image = $this->owner->UnderConstructionImage();
+        if($image && $image->exists()) {
+            $imageName = Controller::join_links($publicDir, $this->owner->UnderConstructionImageName());
+            if(file_exists($imageName)) {
+                unlink($imageName);
+            }
+            $image->copyFile($imageName);
+            // copy($this->UnderConstructionImage()->Link(), $publicDir . '/' . $imageName);
+        }
     }
 
 }
