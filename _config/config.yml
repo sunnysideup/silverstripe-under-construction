@@ -1,0 +1,6 @@
+---
+Name: under-construction
+---
+SilverStripe\SiteConfig\SiteConfig:
+  extensions:
+    - Sunnysideup\UnderConstruction\Extensions\SiteConfigExtension
