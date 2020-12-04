@@ -1,6 +1,6 @@
 <?php
 
-namespace Sunnysideup\UnderConstruction\Extensions\SiteConfigExtension;
+namespace Sunnysideup\UnderConstruction\Extensions;
 
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\FieldList;
@@ -20,7 +20,7 @@ class SiteConfigExtension extends DataExtension
     private const FILE_NAME = 'offline.php';
 
     private static $db = [
-        'UnderConstructionUntil' => 'DateTime',
+        'UnderConstructionUntil' => 'Int',
         'UnderConstructionTitle' => 'Varchar',
         'UnderConstructionSubTitle' => 'Varchar',
     ];
