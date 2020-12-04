@@ -40,6 +40,11 @@ class SiteConfigExtension extends DataExtension
         'UnderConstructionTitle' => 'Sorry, we are offline for an upgrade.',
         'UnderConstructionSubTitle' => 'Please come back soon.',
     ];
+
+    private static $owns = [
+        'UnderConstructionImage',
+    ];
+
     private static $has_one = [
         'UnderConstructionImage' => Image::class,
     ];
@@ -71,10 +76,10 @@ class SiteConfigExtension extends DataExtension
                     ->setIsMultiUpload(false),
             ]
         );
-        $fileName = Controller::join_links(Director::baseFolder(), self::FILE_NAME);
+        $fileName = Controller::join_links(Director::baseFolder(), Director::publicDir(), self::FILE_NAME);
         if(file_exists($fileName)) {
             $publicUrl = Controller::join_links(Director::absoluteBaseURL() , self::FILE_NAME);
-            $html = '<a href="'.$publicUrl.'">'.$publicUrl.'</a>';
+            $html = '<a href="'.$publicUrl.'" target="_offline">'.$publicUrl.'</a>';
         } else {
             $html = 'Please complete details above and save to create your offline file.';
         }
@@ -108,15 +113,14 @@ class SiteConfigExtension extends DataExtension
     {
         parent::onAfterWrite();
         $html = $this->owner->renderWith('Sunnysideup\\UnderConstruction\\UnderConstruction');
-        $publicDir = Director::baseFolder();
-        $fileName = Controller::join_links($publicDir, self::FILE_NAME);
+        $fileName = Controller::join_links(Director::baseFolder(), Director::publicDir(), self::FILE_NAME);
         if(file_exists($fileName)) {
             unlink($fileName);
         }
         file_put_contents($fileName, $html);
         $image = $this->owner->UnderConstructionImage();
         if($image && $image->exists()) {
-            $imageName = Controller::join_links($publicDir, $this->owner->UnderConstructionImageName());
+            $imageName = Controller::join_links(Director::baseFolder(), Director::publicDir(), $this->owner->UnderConstructionImageName());
             if(file_exists($imageName)) {
                 unlink($imageName);
             }

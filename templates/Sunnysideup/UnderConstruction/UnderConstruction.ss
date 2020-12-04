@@ -11,10 +11,11 @@ header('Retry-After: 60'); //60 seconds
         body, html {
           height: 100%;
           margin: 0;
+          background-color: #333;
         }
 
         .bgimg {
-          background-image: url('$UnderConstructionImageName');
+          background-image: url('/$UnderConstructionImageName');
           height: 100%;
           background-position: center;
           background-size: cover;
@@ -55,7 +56,7 @@ header('Retry-After: 60'); //60 seconds
 
 <div class="bgimg">
   <div class="topleft">
-    <p>Logo</p>
+  <p>$Title</p>
   </div>
   <div class="middle">
     <h1>$UnderConstructionTitle</h1>
