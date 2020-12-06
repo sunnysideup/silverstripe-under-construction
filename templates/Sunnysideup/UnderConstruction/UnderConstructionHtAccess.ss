@@ -6,10 +6,12 @@
 Options +FollowSymlinks
 
 RewriteEngine on
-<% loop $UnderConstructionIpAddresses %>
-RewriteCond %{REMOTE_ADDR} !=$IpEscaped
-<% end_loop %>
+
 RewriteCond %{REQUEST_URI} !^/$UnderConstructionFolderName/
+
+<% loop $UnderConstructionIpAddresses %>
+RewriteCond %{REMOTE_ADDR} !^$IpEscaped
+<% end_loop %>
 
 RewriteRule .* /$UnderConstructionFolderName/$UnderConstructionFileName [R=302,L]
 

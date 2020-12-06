@@ -24,12 +24,14 @@ use Sunnysideup\UnderConstruction\Tasks\GoOnline;
 
 class SiteConfigExtension extends DataExtension
 {
+    protected static $loop_count = 0;
+
     private static $db = [
         'UnderConstructionOnOff' => 'Enum("Online,Offline", "Online")',
         'UnderConstructionMinutesOffline' => 'Int',
         'UnderConstructionTitle' => 'Varchar',
         'UnderConstructionSubTitle' => 'Varchar',
-        'UnderConstructionExcludedIps' => 'Text',
+        'UnderConstructionExcludedIps' => 'Varchar',
         'UnderConstructionOutcome' => 'Text',
     ];
 
@@ -62,7 +64,7 @@ class SiteConfigExtension extends DataExtension
                     'Is the site Online or Offline',
                     ['Online' => 'Online', 'Offline' => 'Offline']
                 )
-                    ->setDescription('Make the site go Online / Offline.'),
+                    ->setDescription('Make the site go Online / Offline. Please use with care!'),
                 ReadonlyField::create(
                     'UnderConstructionOutcome',
                     'Outcome of last Action ...'
@@ -142,15 +144,18 @@ class SiteConfigExtension extends DataExtension
 
     public function onAfterWrite()
     {
-        parent::onAfterWrite();
-        $this->getUnderConstructionCalculatedValues()->CreateFiles();
-        if ($this->owner->isChanged('UnderConstructionOnOff')) {
-            if ($this->owner->UnderConstructionOnOff === 'Offline') {
-                $task = Injector::inst()->get(GoOffline::class);
-            } else {
-                $task = Injector::inst()->get(GoOnline::class);
+        if (self::$loop_count < 3) {
+            self::$loop_count++;
+            $this->getUnderConstructionCalculatedValues()->CreateFiles();
+            if ($this->owner->isChanged('UnderConstructionOnOff')) {
+                if ($this->owner->UnderConstructionOnOff === 'Offline') {
+                    $task = Injector::inst()->get(GoOffline::class);
+                } elseif ($this->owner->UnderConstructionOnOff === 'Online') {
+                    $task = Injector::inst()->get(GoOnline::class);
+                }
+                $this->owner->UnderConstructionOutcome = $task->run(null);
+                $this->owner->write();
             }
-            $this->owner->UnderConstructionOutcome = $task->run(null);
         }
     }
 }

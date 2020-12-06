@@ -2,12 +2,13 @@
 
 header('HTTP/1.1 503 Service Temporarily Unavailable');
 header('Status: 503 Service Temporarily Unavailable');
-header('Retry-After: 60'); //60 seconds
+header('Retry-After: 90'); //90 seconds
+
 \$now = time();
 \$ts = 0;
-\$fileLocation = 'offline-timestamp.txt')
-if(file_exists(\$fileLocation) {
-  \$ts = intval(file_get_contents(timestamp.txt));
+\$fileLocation = '$UnderConstructionFileName' . '.txt';
+if(file_exists(\$fileLocation)) {
+  \$ts = intval(file_get_contents(\$fileLocation)) - 0;
 }
 if(\$ts > \$now) {
   \$ts = 0;
@@ -16,6 +17,8 @@ if(\$ts === 0) {
   \$ts = \$now;
   file_put_contents(\$fileLocation, \$ts);
 }
+\$distanceInSeconds = (\$ts + ($SiteConfig.UnderConstructionMinutesOffline * 60)) - \$now;
+\$distanceInMilliSeconds = \$distanceInSeconds * 1000;
 ?>
 <!DOCTYPE html>
 <html>
@@ -47,7 +50,7 @@ if(\$ts === 0) {
 
         .bottomleft {
           position: absolute;
-          top: 1rem;
+          bottom: 1rem;
           left: 1rem;
           right: 1rem;
           text-align: center;
@@ -91,19 +94,13 @@ if(\$ts === 0) {
 </div>
 
 <script>
-// Set the date we're counting down to - two hours in the future
-// Update the count down every 1 second
-const startNow = new Date()
-// todo: set universal start time
-var countDownDate = new Date(<?php echo \$ts ?> + ((1000 * 60 * $SiteConfig.UnderConstructionMinutesOffline))).getTime();
+
+var distance = <?php echo \$distanceInMilliSeconds ?>
 
 const countdownfunction = window.setInterval(
     function () {
-        // Get todays date and time
-        const now = new Date().getTime()
-
+        distance = distance - 1000;
         // Find the distance between now an the count down date
-        const distance = countDownDate - now
 
         // Time calculations for days, hours, minutes and seconds
         // var days = Math.floor(distance / (1000 * 60 * 60 * 24));

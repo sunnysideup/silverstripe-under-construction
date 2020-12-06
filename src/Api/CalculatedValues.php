@@ -2,6 +2,7 @@
 
 namespace Sunnysideup\UnderConstruction\Api;
 
+use SilverStripe\Assets\Folder;
 use SilverStripe\Assets\Image;
 
 use SilverStripe\Control\Controller;
@@ -56,20 +57,29 @@ class CalculatedValues extends ViewableData
         //create html
         $dir = dirname($this->UnderConstructionFilePath());
         Folder::find_or_make($dir);
-        $html = $this->renderWith('Sunnysideup\\UnderConstruction\\UnderConstructionPage');
-        $fileName = $this->UnderConstructionFileLocation();
-        if (file_exists($fileName)) {
-            unlink($fileName);
-        }
-        //create image
-        file_put_contents($fileName, $html);
-        $image = $this->sc->UnderConstructionImage();
-        if ($image && $image->exists()) {
-            $imageName = $this->UnderConstructionImagePath();
-            if (file_exists($imageName)) {
-                unlink($imageName);
+        if (file_exists($dir)) {
+            $html = $this->renderWith('Sunnysideup\\UnderConstruction\\UnderConstructionPage');
+            $fileName = $this->UnderConstructionFilePath();
+            if (file_exists($fileName)) {
+                unlink($fileName);
             }
-            $image->copyFile($imageName);
+            //delete timestamp
+            if (file_exists($fileName . '.txt')) {
+                unlink($fileName . '.txt');
+            }
+            //create image
+            file_put_contents($fileName, $html);
+            $image = $this->sc->UnderConstructionImage();
+            if ($image && $image->exists()) {
+                $imageName = $this->UnderConstructionImagePath();
+                if (file_exists($imageName)) {
+                    unlink($imageName);
+                }
+                $image->copyFile($imageName);
+            }
+        } else {
+            $this->sc->UnderConstructionOutcome = 'Could not create: ' . $dir;
+            $this->sc->write();
         }
     }
 
@@ -122,7 +132,7 @@ class CalculatedValues extends ViewableData
      */
     public function UnderConstructionImagePath(): string
     {
-        $extension = $this->UnderConstructionImage()->getExtension();
+        $extension = $this->sc->UnderConstructionImage()->getExtension();
 
         return $this->UnderConstructionFilePath() . '.' . $extension;
     }
