@@ -1,7 +1,7 @@
 # Silverstripe Under Construction module
-[![Build Status](https://travis-ci.org/sunnysideup/silverstripe-under-construction.svg?branch=master)](https://travis-ci.org/sunnysideup/silverstripe-under-construction)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sunnysideup/silverstripe-under-construction/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sunnysideup/silverstripe-under-construction/?branch=master)
-[![codecov.io](https://codecov.io/github/sunnysideup/silverstripe-under-construction/coverage.svg?branch=master)](https://codecov.io/github/sunnysideup/silverstripe-under-construction?branch=master)
+[![Build Status](https://travis-ci.org/sunnysideup/silverstripe-under-construction-or-offline.svg?branch=master)](https://travis-ci.org/sunnysideup/silverstripe-under-construction-or-offline)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sunnysideup/silverstripe-under-construction-or-offline/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sunnysideup/silverstripe-under-construction-or-offline/?branch=master)
+[![codecov.io](https://codecov.io/github/sunnysideup/silverstripe-under-construction-or-offline/coverage.svg?branch=master)](https://codecov.io/github/sunnysideup/silverstripe-under-construction-or-offline?branch=master)
 
 [![Latest Stable Version](https://poser.pugx.org/sunnysideup/under-construction/version)](https://packagist.org/packages/sunnysideup/under-construction)
 [![License](https://poser.pugx.org/sunnysideup/under-construction/license)](https://packagist.org/packages/sunnysideup/under-construction)
