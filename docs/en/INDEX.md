@@ -1,8 +1,14 @@
-Go to the siteconfig, open the `offline tab`, choose your settings and save.
+This module only works in apache!
+
+To try it out, install and go to the siteconfig, open the `offline tab`, choose your settings and save.
 
 You can put your site in offline and in online mode from here.
 
-It adds the following to your `.htacces` file in public folder:
+It ...
+
+1. creates offline file.
+
+2. adds the following to your `.htacces` file in public folder:
 
 ```.htaccess
 Options +FollowSymlinks
