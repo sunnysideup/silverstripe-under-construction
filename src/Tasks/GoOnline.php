@@ -1,18 +1,12 @@
 <?php
 
-use SilverStripe\SiteConfig\SiteConfig;
-use SilverStripe\Dev\BuildTask;
-
-use SilverStripe\Control\Director;
-use SilverStripe\Control\Controller;
-
+namespace Sunnysideup\UnderConstruction\Tasks;
 
 class GoOnline extends GoOffline
 {
+    protected $title = 'Go Online / End Under Construction Period';
 
     private static $segment = 'go-online-or-finish-construction';
-
-    protected $title = 'Go Online / End Under Construction Period';
 
     /**
      * @param \SilverStripe\Control\HTTPRequest $request
@@ -23,7 +17,7 @@ class GoOnline extends GoOffline
         $path = $this->getHtAccessPath();
         $currentContent = file_get_contents($path);
         $contentToRemove = $this->getHtAccessContent();
-        if(strpos($currentContent, $contentToRemove) !== false)  {
+        if (strpos($currentContent, $contentToRemove) !== false) {
             $currentContent = str_replace($contentToRemove, '', $currentContent);
             $currentContent = str_replace($contentToRemove, '', $currentContent);
             $currentContent = str_replace($contentToRemove, '', $currentContent);
@@ -32,5 +26,4 @@ class GoOnline extends GoOffline
 
         return 'Your site is now offline.';
     }
-
 }
