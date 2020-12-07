@@ -22,15 +22,20 @@ class GoOffline extends BuildTask
      */
     public function run($request)
     {
-        $path = $this->getHtAccessPath();
-        $currentContent = file_get_contents($path);
-        $contentToAdd = $this->getHtAccessContent();
-        if (strpos($currentContent, $contentToAdd) === false) {
-            $currentContent = $contentToAdd . $currentContent;
-        }
-        file_put_contents($path, $currentContent);
+        if($this->isReady()) {
+            $path = $this->getHtAccessPath();
+            $currentContent = file_get_contents($path);
+            $contentToAdd = $this->getHtAccessContent();
+            if (strpos($currentContent, $contentToAdd) === false) {
+                $currentContent = $contentToAdd . $currentContent;
+            }
+            file_put_contents($path, $currentContent);
 
-        return 'Your site is now offline.';
+            return 'Your site is now offline.';
+        } else {
+
+            return 'Your site is not ready to go offline.';
+        }
     }
 
     protected function getHtAccessPath(): string
@@ -43,5 +48,12 @@ class GoOffline extends BuildTask
         $siteConfig = SiteConfig::current_site_config();
 
         return $siteConfig->getUnderConstructionCalculatedValues()->getHtAccessContent();
+    }
+
+    protected function isReady(): bool
+    {
+        $siteConfig = SiteConfig::current_site_config();
+
+        return $siteConfig->getUnderConstructionCalculatedValues()->UnderConstructionIsReady();
     }
 }
