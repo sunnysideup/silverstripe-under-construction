@@ -162,6 +162,10 @@ class SiteConfigExtension extends DataExtension
         }
     }
 
+    public function requireDefaultRecords()
+    {
+        $this->getUnderConstructionCalculatedValues()->CreateDirAndTest();
+    }
 
 
 }

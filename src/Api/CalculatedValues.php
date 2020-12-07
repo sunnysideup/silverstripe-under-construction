@@ -55,12 +55,7 @@ class CalculatedValues extends ViewableData
     public function CreateFiles()
     {
         //create html
-        $dir = dirname($this->UnderConstructionFilePath());
-        Folder::find_or_make($dir);
-        if(! file_exists($dir)) {
-            mkdir($dir);
-        }
-        if (file_exists($dir)) {
+        if ($this->CreateDirAndTest()) {
             $html = $this->renderWith('Sunnysideup\\UnderConstruction\\UnderConstructionPage');
             $fileName = $this->UnderConstructionFilePath();
             if (file_exists($fileName)) {
@@ -81,10 +76,25 @@ class CalculatedValues extends ViewableData
                 }
                 copy($originalImagePath, $newImagePath);
             }
-        } else {
-            $this->sc->UnderConstructionOutcome = 'Could not create: ' . $dir;
-            $this->sc->write();
         }
+    }
+
+    public function CreateDirAndTest() :bool
+    {
+        $dir = dirname($this->UnderConstructionFilePath());
+        Folder::find_or_make($dir);
+        if(! file_exists($dir)) {
+            mkdir($dir);
+        }
+        if (file_exists($dir)) {
+            return true;
+        } else {
+            $this->sc->UnderConstructionOutcome = 'Could not create files for going offline.';
+            $this->sc->write();
+
+            return false;
+        }
+
     }
 
     /**
