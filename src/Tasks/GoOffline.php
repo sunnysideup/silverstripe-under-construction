@@ -41,6 +41,7 @@ class GoOffline extends BuildTask
     protected function getHtAccessContent(): string
     {
         $siteConfig = SiteConfig::current_site_config();
+
         return $siteConfig->getUnderConstructionCalculatedValues()->getHtAccessContent();
     }
 }

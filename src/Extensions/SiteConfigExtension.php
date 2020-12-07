@@ -97,12 +97,11 @@ class SiteConfigExtension extends DataExtension
                     ->setIsMultiUpload(false),
             ]
         );
-        $fileName = $owner->getUnderConstructionCalculatedValues()->UnderConstructionFilePath();
-        if (file_exists($fileName)) {
+        if($this->getUnderConstructionCalculatedValues()->UnderConstructionIsReady()) {
             $publicUrl = $this->getUnderConstructionCalculatedValues()->UnderConstructionUrlPath();
             $html = '<a href="' . $publicUrl . '" target="_offline">' . $publicUrl . '</a>';
         } else {
-            $html = 'Please complete details above and save to create your offline file.';
+            $html = 'No offline page has been created yet.';
         }
         $fields->addFieldsToTab(
             'Root.Offline',
@@ -156,6 +155,12 @@ class SiteConfigExtension extends DataExtension
                 $this->owner->UnderConstructionOutcome = $task->run(null);
                 $this->owner->write();
             }
+            if( ! $this->getUnderConstructionCalculatedValues()->UnderConstructionIsReady()) {
+                $this->owner->UnderConstructionOutcome = 'Could not create offline files.';
+            }
         }
     }
+
+
+
 }

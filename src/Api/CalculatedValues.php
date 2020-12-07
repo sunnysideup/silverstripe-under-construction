@@ -74,11 +74,12 @@ class CalculatedValues extends ViewableData
             file_put_contents($fileName, $html);
             $image = $this->sc->UnderConstructionImage();
             if ($image && $image->exists()) {
-                $imageName = $this->UnderConstructionImagePath();
-                if (file_exists($imageName)) {
-                    unlink($imageName);
+                $originalImagePath = $this->UnderConstructionOriginalImagePath();
+                $newImagePath = $this->UnderConstructionImagePath();
+                if (file_exists($newImagePath)) {
+                    unlink($newImagePath);
                 }
-                $image->copyFile($imageName);
+                copy($originalImagePath, $newImagePath);
             }
         } else {
             $this->sc->UnderConstructionOutcome = 'Could not create: ' . $dir;
@@ -164,9 +165,27 @@ class CalculatedValues extends ViewableData
      */
     public function UnderConstructionImageName(): string
     {
+        $path = $this->UnderConstructionImagePath();
+        if (file_exists($path)) {
+            return basename($path);
+        }
+        return '';
+    }
+    /**
+     * something like offline.php.png.
+     * @return string
+     */
+    public function UnderConstructionOriginalImagePath(): string
+    {
         if($this->sc->UnderConstructionImageID) {
             if($this->sc->UnderConstructionImage()->exists()) {
-                return $this->sc->UnderConstructionImage()->getFilename();
+                $name = $this->sc->UnderConstructionImage()->getFilename();
+                return Controller::join_links(
+                    Director::baseFolder(),
+                    Director::publicDir(),
+                    ASSETS_DIR,
+                    $name
+                );
             }
         }
         return '';
@@ -179,5 +198,10 @@ class CalculatedValues extends ViewableData
         $array = explode(PHP_EOL, $txt);
 
         return PHP_EOL . implode(PHP_EOL, $array) . PHP_EOL;
+    }
+
+    public function UnderConstructionIsReady() : bool
+    {
+        return file_exists($this->UnderConstructionFilePath());
     }
 }
