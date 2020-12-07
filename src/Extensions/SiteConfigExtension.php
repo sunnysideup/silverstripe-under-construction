@@ -177,7 +177,7 @@ class SiteConfigExtension extends DataExtension
                 $this->owner->UnderConstructionOutcome = 'Could not create offline files.';
             }
         }
-        register_shutdown_function(array($this->owner, 'CreateFiles'));
+        register_shutdown_function([$this->owner, 'CreateFiles']);
     }
 
     public function CreateFiles()
@@ -187,7 +187,7 @@ class SiteConfigExtension extends DataExtension
 
     public function requireDefaultRecords()
     {
-        if(! Director::is_cli()) {
+        if (! Director::is_cli()) {
             $this->getUnderConstructionCalculatedValues()->CreateDirAndTest();
         }
     }

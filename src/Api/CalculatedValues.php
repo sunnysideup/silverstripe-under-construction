@@ -15,10 +15,10 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\SiteConfig\SiteConfig;
 
-use SilverStripe\View\SSViewer;
 use SilverStripe\View\ArrayData;
-use SilverStripe\View\ViewableData;
 use SilverStripe\View\Requirements;
+use SilverStripe\View\SSViewer;
+use SilverStripe\View\ViewableData;
 
 
 use Sunnysideup\UnderConstruction\Tasks\GoOffline;
