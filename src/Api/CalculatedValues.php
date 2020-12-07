@@ -112,9 +112,9 @@ class CalculatedValues extends ViewableData
     public function CreateDirAndTest(): bool
     {
         $dir = dirname($this->UnderConstructionFilePath());
-        Folder::find_or_make($dir);
+        Folder::find_or_make('../' . $this->UnderConstructionFolderName());
         if (! file_exists($dir)) {
-            mkdir($dir);
+            @mkdir($dir);
         }
         if (file_exists($dir)) {
             return true;
