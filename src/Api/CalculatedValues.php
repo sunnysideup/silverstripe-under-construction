@@ -57,6 +57,9 @@ class CalculatedValues extends ViewableData
         //create html
         $dir = dirname($this->UnderConstructionFilePath());
         Folder::find_or_make($dir);
+        if(! file_exists($dir)) {
+            mkdir($dir);
+        }
         if (file_exists($dir)) {
             $html = $this->renderWith('Sunnysideup\\UnderConstruction\\UnderConstructionPage');
             $fileName = $this->UnderConstructionFilePath();
@@ -161,7 +164,12 @@ class CalculatedValues extends ViewableData
      */
     public function UnderConstructionImageName(): string
     {
-        return $this->sc->UnderConstructionImage()->getFilename();
+        if($this->sc->UnderConstructionImageID) {
+            if($this->sc->UnderConstructionImage()->exists()) {
+                return $this->sc->UnderConstructionImage()->getFilename();
+            }
+        }
+        return '';
     }
 
     public function getHtAccessContent(): string
