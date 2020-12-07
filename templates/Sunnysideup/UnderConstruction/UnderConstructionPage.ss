@@ -1,11 +1,11 @@
-<% include UnderConstructionPhpHeader %>
+<% include Sunnysideup\UnderConstruction\Includes\UnderConstructionPhpHeader %>
 <html lang="en">
-   <% include UnderConstructionHeader %>
+   <% include Sunnysideup\UnderConstruction\Includes\UnderConstructionHeader %>
 <body>
 
-<% include UnderConstructionBody %>
+<% include Sunnysideup\UnderConstruction\Includes\UnderConstructionBody %>
 
-<% include UnderConstructionJs %>
+<% include Sunnysideup\UnderConstruction\Includes\UnderConstructionJs %>
 
 </body>
 </html>

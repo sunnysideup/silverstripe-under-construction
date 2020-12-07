@@ -43,6 +43,9 @@
     h1 {
         font-size: 2rem;
     }
+    h2 {
+        font-size: 1.6rem;
+    }
     p {
         font-size: 1rem;
     }

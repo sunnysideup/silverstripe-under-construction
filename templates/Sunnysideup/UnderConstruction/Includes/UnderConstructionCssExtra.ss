@@ -1,5 +1,5 @@
 <style>
-    body, html, * {
+    body, html {
       background: $UnderConstructionBackgroundColour;
       color: $UnderConstructionForegroundColour;
     }

@@ -15,8 +15,10 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\SiteConfig\SiteConfig;
 
+use SilverStripe\View\SSViewer;
 use SilverStripe\View\ArrayData;
 use SilverStripe\View\ViewableData;
+use SilverStripe\View\Requirements;
 
 
 use Sunnysideup\UnderConstruction\Tasks\GoOffline;
@@ -32,10 +34,10 @@ class CalculatedValues extends ViewableData
     protected $sc = null;
 
     private static $under_construction_bg_options = [
-        '#fff' => 'white',
-        '#ddd' => 'off white',
-        '#222' => 'off black',
         '#000' => 'black',
+        '#222' => 'off black',
+        '#ddd' => 'off white',
+        '#fff' => 'white',
         'linear-gradient(to left, rgb(195, 20, 50), rgb(36, 11, 54))' => 'witching hour',
         'linear-gradient(to left, rgb(189, 195, 199), rgb(44, 62, 80))' => 'grade grey',
         'linear-gradient(to left, rgb(55, 59, 68), rgb(66, 134, 244))' => 'dark ocean',
@@ -80,7 +82,11 @@ class CalculatedValues extends ViewableData
     {
         //create html
         if ($this->CreateDirAndTest()) {
+            // SSViewer::config()->update('theme_enabled', false);
+            SSViewer::config()->update('source_file_comments', false);
+            Requirements::clear();
             $html = $this->renderWith('Sunnysideup\\UnderConstruction\\UnderConstructionPage');
+            // SSViewer::config()->update('theme_enabled', false);
             $fileName = $this->UnderConstructionFilePath();
             if (file_exists($fileName)) {
                 unlink($fileName);
@@ -226,7 +232,11 @@ class CalculatedValues extends ViewableData
 
     public function getHtAccessContent(): string
     {
+        // SSViewer::config()->update('theme_enabled', true);
+        Requirements::clear();
+        SSViewer::config()->update('source_file_comments', false);
         $txt = $this->renderWith('Sunnysideup\\UnderConstruction\\UnderConstructionHtAccess');
+        // SSViewer::config()->update('theme_enabled', false);
 
         $array = explode(PHP_EOL, $txt);
 

@@ -155,14 +155,12 @@ class SiteConfigExtension extends DataExtension
             }
         }
         $this->owner->UnderConstructionExcludedIps = implode(',', $array);
-        $this->getUnderConstructionCalculatedValues()->CreateFiles();
     }
 
     public function onAfterWrite()
     {
         if (self::$loop_count < 3) {
             self::$loop_count++;
-            $this->getUnderConstructionCalculatedValues()->CreateFiles();
             if ($this->owner->isChanged('UnderConstructionOnOff')) {
                 $task = null;
                 if ($this->owner->UnderConstructionOnOff === 'Offline') {
@@ -179,10 +177,18 @@ class SiteConfigExtension extends DataExtension
                 $this->owner->UnderConstructionOutcome = 'Could not create offline files.';
             }
         }
+        register_shutdown_function(array($this->owner, 'CreateFiles'));
+    }
+
+    public function CreateFiles()
+    {
+        $this->getUnderConstructionCalculatedValues()->CreateFiles();
     }
 
     public function requireDefaultRecords()
     {
-        $this->getUnderConstructionCalculatedValues()->CreateDirAndTest();
+        if(! Director::is_cli()) {
+            $this->getUnderConstructionCalculatedValues()->CreateDirAndTest();
+        }
     }
 }

@@ -1,6 +1,6 @@
 <div class="bgimg">
   <div class="top">
-    <p>$SiteConfig.Title</p>
+  <h2>$SiteConfig.Title</h2>
   </div>
   <div class="middle">
     <h1>$SiteConfig.UnderConstructionTitle</h1>
