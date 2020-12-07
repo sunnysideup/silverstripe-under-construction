@@ -67,9 +67,9 @@ class SiteConfigExtension extends DataExtension
                     ->setDescription('Make the site go Online / Offline. Please use with care!'),
                 ReadonlyField::create(
                     'UnderConstructionOutcome',
-                    'Outcome of last Action ...'
+                    'Status ...'
                 )
-                    ->setDescription('Was the last action successful?'),
+                    ->setDescription('Was the last action successful? Are there any worries?'),
                 NumericField::create(
                     'UnderConstructionMinutesOffline',
                     'Minutes Offline'

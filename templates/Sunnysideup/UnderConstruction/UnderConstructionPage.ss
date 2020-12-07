@@ -86,7 +86,7 @@ if(\$ts === 0) {
   <div class="middle">
     <h1>$SiteConfig.UnderConstructionTitle</h1>
     <hr>
-    <p>Back in ... <span id="timer"></span></p>
+    <p>Back in: <span id="timer"></span></p>
   </div>
   <div class="bottomleft">
     <p>$SiteConfig.UnderConstructionSubTitle</p>
