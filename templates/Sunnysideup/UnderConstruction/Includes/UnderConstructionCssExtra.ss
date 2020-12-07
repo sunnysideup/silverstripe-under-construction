@@ -1,12 +1,12 @@
 <style>
-    body, html {
-      background: $UnderConstructionBackgroundColour;
-      color: $UnderConstructionForegroundColour;
-    }
+body, html {
+    background: $UnderConstructionBackgroundColour;
+    color: $UnderConstructionForegroundColour;
+}
 
-    <% if $UnderConstructionImageName %>
-    .bgimg {
-       background-image: url('$UnderConstructionImageName');
-    }
-    <% end_if %>
+<% if $UnderConstructionImageName %>
+.bgimg {
+    background-image: url('$UnderConstructionImageName');
+}
+<% end_if %>
 </style>

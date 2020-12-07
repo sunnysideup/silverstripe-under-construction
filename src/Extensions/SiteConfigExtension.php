@@ -114,6 +114,13 @@ class SiteConfigExtension extends DataExtension
                     ->setDescription('Was the last action successful? Are there any worries?'),
             ]
         );
+        if($this->owner->UnderConstructionOnOff === 'Offline') {
+            $fields->replaceField(
+                'UnderConstructionOnOff',
+                ReadonlyField::create('UnderConstructionOnOff', 'Allowed IP Addresses')
+                    ->setDescription('This can only be changed when the site is Online.')
+            );
+        }
         if ($this->getUnderConstructionCalculatedValues()->UnderConstructionIsReady()) {
             $publicUrl = $this->getUnderConstructionCalculatedValues()->UnderConstructionUrlPath();
             $html = '<a href="' . $publicUrl . '" target="_offline">' . $publicUrl . '</a>';
