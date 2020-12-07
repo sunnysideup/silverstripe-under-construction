@@ -31,6 +31,7 @@ class CalculatedValues extends ViewableData
 
 
     private static $under_construction_bg_options = [
+        '#333' => 'grey',
         'linear-gradient(to left, rgb(253, 200, 48), rgb(243, 115, 53))' => 'witching hour',
         'linear-gradient(to left, rgb(189, 195, 199), rgb(44, 62, 80))' => 'grade grey',
         'linear-gradient(to left, rgb(55, 59, 68), rgb(66, 134, 244))' => 'dark ocean',
@@ -43,8 +44,10 @@ class CalculatedValues extends ViewableData
     ];
 
     private static $under_construction_fg_options = [
-        '#eee' => 'white',
-        '#222' => 'black',
+        '#fff' => 'white',
+        '#eee' => 'off white',
+        '#222' => 'off black',
+        '#000' => 'black',
     ];
 
     protected $sc = null;

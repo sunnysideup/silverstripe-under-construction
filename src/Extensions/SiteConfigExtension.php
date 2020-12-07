@@ -45,6 +45,8 @@ class SiteConfigExtension extends DataExtension
     ];
 
     private static $defaults = [
+        'UnderConstructionBackgroundColour' => '#000',
+        'UnderConstructionForegroundColour' => '#fff',
         'UnderConstructionOnOff' => 'Online',
         'UnderConstructionMinutesOffline' => 20,
         'UnderConstructionTitle' => 'Sorry, we are offline for an upgrade.',
