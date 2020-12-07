@@ -29,10 +29,11 @@ class CalculatedValues extends ViewableData
 
     private const UNDER_CONSTRUCTION_FILE_NAME = 'offline.php';
 
+    protected $sc = null;
 
     private static $under_construction_bg_options = [
         '#333' => 'grey',
-        'linear-gradient(to left, rgb(253, 200, 48), rgb(243, 115, 53))' => 'witching hour',
+        'linear-gradient(to left, rgb(195, 20, 50), rgb(36, 11, 54))' => 'witching hour',
         'linear-gradient(to left, rgb(189, 195, 199), rgb(44, 62, 80))' => 'grade grey',
         'linear-gradient(to left, rgb(55, 59, 68), rgb(66, 134, 244))' => 'dark ocean',
         'linear-gradient(to left, rgb(30, 150, 0), rgb(255, 242, 0), rgb(255, 0, 0))' => 'rastafari',
@@ -49,8 +50,6 @@ class CalculatedValues extends ViewableData
         '#222' => 'off black',
         '#000' => 'black',
     ];
-
-    protected $sc = null;
 
     public function __construct(SiteConfig $siteConfig)
     {
@@ -100,22 +99,20 @@ class CalculatedValues extends ViewableData
         }
     }
 
-    public function CreateDirAndTest() :bool
+    public function CreateDirAndTest(): bool
     {
         $dir = dirname($this->UnderConstructionFilePath());
         Folder::find_or_make($dir);
-        if(! file_exists($dir)) {
+        if (! file_exists($dir)) {
             mkdir($dir);
         }
         if (file_exists($dir)) {
             return true;
-        } else {
-            $this->sc->UnderConstructionOutcome = 'Could not create files for going offline.';
-            $this->sc->write();
-
-            return false;
         }
+        $this->sc->UnderConstructionOutcome = 'Could not create files for going offline.';
+        $this->sc->write();
 
+        return false;
     }
 
     /**
@@ -202,14 +199,15 @@ class CalculatedValues extends ViewableData
         }
         return '';
     }
+
     /**
      * something like offline.php.png.
      * @return string
      */
     public function UnderConstructionOriginalImagePath(): string
     {
-        if($this->sc->UnderConstructionImageID) {
-            if($this->sc->UnderConstructionImage()->exists()) {
+        if ($this->sc->UnderConstructionImageID) {
+            if ($this->sc->UnderConstructionImage()->exists()) {
                 $name = $this->sc->UnderConstructionImage()->getFilename();
                 return Controller::join_links(
                     Director::baseFolder(),
@@ -231,7 +229,7 @@ class CalculatedValues extends ViewableData
         return PHP_EOL . implode(PHP_EOL, $array) . PHP_EOL;
     }
 
-    public function UnderConstructionIsReady() : bool
+    public function UnderConstructionIsReady(): bool
     {
         return file_exists($this->UnderConstructionFilePath());
     }

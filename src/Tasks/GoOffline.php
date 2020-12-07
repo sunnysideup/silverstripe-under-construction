@@ -22,7 +22,7 @@ class GoOffline extends BuildTask
      */
     public function run($request)
     {
-        if($this->isReady()) {
+        if ($this->isReady()) {
             $path = $this->getHtAccessPath();
             $currentContent = file_get_contents($path);
             $contentToAdd = $this->getHtAccessContent();
@@ -32,10 +32,8 @@ class GoOffline extends BuildTask
             file_put_contents($path, $currentContent);
 
             return 'Your site is now offline.';
-        } else {
-
-            return 'Your site is not ready to go offline.';
         }
+        return 'Your site is not ready to go offline.';
     }
 
     protected function getHtAccessPath(): string

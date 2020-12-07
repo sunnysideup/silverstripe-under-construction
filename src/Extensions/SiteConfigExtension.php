@@ -2,13 +2,13 @@
 
 namespace Sunnysideup\UnderConstruction\Extensions;
 
-use SilverStripe\Forms\DropdownField;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
 use SilverStripe\Control\Controller;
+use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Injector\Injector;
 
-use SilverStripe\Core\Config\Config;
+use SilverStripe\Forms\DropdownField;
 
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\NumericField;
@@ -61,7 +61,6 @@ class SiteConfigExtension extends DataExtension
 
     public function updateCMSFields(FieldList $fields)
     {
-        $owner = $this->owner;
         $fields->removeByName('UnderConstructionOutcome');
         $fields->addFieldsToTab(
             'Root.Offline',
@@ -114,7 +113,7 @@ class SiteConfigExtension extends DataExtension
                     ->setDescription('Was the last action successful? Are there any worries?'),
             ]
         );
-        if($this->getUnderConstructionCalculatedValues()->UnderConstructionIsReady()) {
+        if ($this->getUnderConstructionCalculatedValues()->UnderConstructionIsReady()) {
             $publicUrl = $this->getUnderConstructionCalculatedValues()->UnderConstructionUrlPath();
             $html = '<a href="' . $publicUrl . '" target="_offline">' . $publicUrl . '</a>';
         } else {
@@ -165,15 +164,18 @@ class SiteConfigExtension extends DataExtension
             self::$loop_count++;
             $this->getUnderConstructionCalculatedValues()->CreateFiles();
             if ($this->owner->isChanged('UnderConstructionOnOff')) {
+                $task = null;
                 if ($this->owner->UnderConstructionOnOff === 'Offline') {
                     $task = Injector::inst()->get(GoOffline::class);
                 } elseif ($this->owner->UnderConstructionOnOff === 'Online') {
                     $task = Injector::inst()->get(GoOnline::class);
                 }
-                $this->owner->UnderConstructionOutcome = $task->run(null);
-                $this->owner->write();
+                if ($task) {
+                    $this->owner->UnderConstructionOutcome = $task->run(null);
+                    $this->owner->write();
+                }
             }
-            if( ! $this->getUnderConstructionCalculatedValues()->UnderConstructionIsReady()) {
+            if (! $this->getUnderConstructionCalculatedValues()->UnderConstructionIsReady()) {
                 $this->owner->UnderConstructionOutcome = 'Could not create offline files.';
             }
         }
@@ -183,6 +185,4 @@ class SiteConfigExtension extends DataExtension
     {
         $this->getUnderConstructionCalculatedValues()->CreateDirAndTest();
     }
-
-
 }
