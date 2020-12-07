@@ -139,6 +139,7 @@ class SiteConfigExtension extends DataExtension
             }
         }
         $this->owner->UnderConstructionExcludedIps = implode(',', $array);
+        $this->getUnderConstructionCalculatedValues()->CreateFiles();
     }
 
     public function onAfterWrite()
