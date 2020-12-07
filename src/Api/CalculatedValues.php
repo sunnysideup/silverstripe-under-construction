@@ -32,7 +32,10 @@ class CalculatedValues extends ViewableData
     protected $sc = null;
 
     private static $under_construction_bg_options = [
-        '#333' => 'grey',
+        '#fff' => 'white',
+        '#ddd' => 'off white',
+        '#222' => 'off black',
+        '#000' => 'black',
         'linear-gradient(to left, rgb(195, 20, 50), rgb(36, 11, 54))' => 'witching hour',
         'linear-gradient(to left, rgb(189, 195, 199), rgb(44, 62, 80))' => 'grade grey',
         'linear-gradient(to left, rgb(55, 59, 68), rgb(66, 134, 244))' => 'dark ocean',
@@ -42,11 +45,12 @@ class CalculatedValues extends ViewableData
         'linear-gradient(to left, rgb(0, 0, 70), rgb(28, 181, 224))' => 'vision of grandeur',
         'linear-gradient(to left, rgb(247, 151, 30), rgb(255, 210, 0))' => 'learning and leading',
         'linear-gradient(to left, rgb(93, 65, 87), rgb(168, 202, 186))' => 'forever lost',
+        'linear-gradient(to left, rgb(0, 4, 40), rgb(0, 78, 146))' => 'frost',
     ];
 
     private static $under_construction_fg_options = [
         '#fff' => 'white',
-        '#eee' => 'off white',
+        '#ddd' => 'off white',
         '#222' => 'off black',
         '#000' => 'black',
     ];
