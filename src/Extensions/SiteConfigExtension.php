@@ -2,10 +2,13 @@
 
 namespace Sunnysideup\UnderConstruction\Extensions;
 
+use SilverStripe\Forms\DropdownField;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Injector\Injector;
+
+use SilverStripe\Core\Config\Config;
 
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\NumericField;
@@ -33,6 +36,8 @@ class SiteConfigExtension extends DataExtension
         'UnderConstructionSubTitle' => 'Varchar',
         'UnderConstructionExcludedIps' => 'Varchar',
         'UnderConstructionOutcome' => 'Text',
+        'UnderConstructionBackgroundColour' => 'Varchar(200)',
+        'UnderConstructionForegroundColour' => 'Varchar(200)',
     ];
 
     private static $has_one = [
@@ -65,11 +70,6 @@ class SiteConfigExtension extends DataExtension
                     ['Online' => 'Online', 'Offline' => 'Offline']
                 )
                     ->setDescription('Make the site go Online / Offline. Please use with care!'),
-                ReadonlyField::create(
-                    'UnderConstructionOutcome',
-                    'Status ...'
-                )
-                    ->setDescription('Was the last action successful? Are there any worries?'),
                 NumericField::create(
                     'UnderConstructionMinutesOffline',
                     'Minutes Offline'
@@ -95,6 +95,21 @@ class SiteConfigExtension extends DataExtension
                     ->setFolderName('offline/images')
                     ->setAllowedFileCategories('image')
                     ->setIsMultiUpload(false),
+                DropdownField::create(
+                    'UnderConstructionForegroundColour',
+                    'Text Colour',
+                    Config::inst()->get(CalculatedValues::class, 'under_construction_fg_options')
+                ),
+                DropdownField::create(
+                    'UnderConstructionBackgroundColour',
+                    'Text Colour',
+                    Config::inst()->get(CalculatedValues::class, 'under_construction_bg_options')
+                ),
+                ReadonlyField::create(
+                    'UnderConstructionOutcome',
+                    'Status ...'
+                )
+                    ->setDescription('Was the last action successful? Are there any worries?'),
             ]
         );
         if($this->getUnderConstructionCalculatedValues()->UnderConstructionIsReady()) {

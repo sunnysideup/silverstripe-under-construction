@@ -29,6 +29,24 @@ class CalculatedValues extends ViewableData
 
     private const UNDER_CONSTRUCTION_FILE_NAME = 'offline.php';
 
+
+    private static $under_construction_bg_options = [
+        'linear-gradient(to left, rgb(253, 200, 48), rgb(243, 115, 53))' => 'witching hour',
+        'linear-gradient(to left, rgb(189, 195, 199), rgb(44, 62, 80))' => 'grade grey',
+        'linear-gradient(to left, rgb(55, 59, 68), rgb(66, 134, 244))' => 'dark ocean',
+        'linear-gradient(to left, rgb(30, 150, 0), rgb(255, 242, 0), rgb(255, 0, 0))' => 'rastafari',
+        'linear-gradient(to left, rgb(253, 200, 48), rgb(243, 115, 53))' => 'citrus peel',
+        'linear-gradient(to left, rgb(0, 0, 0), rgb(15, 155, 15))' => 'terminal',
+        'linear-gradient(to left, rgb(0, 0, 70), rgb(28, 181, 224))' => 'vision of grandeur',
+        'linear-gradient(to left, rgb(247, 151, 30), rgb(255, 210, 0))' => 'learning and leading',
+        'linear-gradient(to left, rgb(93, 65, 87), rgb(168, 202, 186))' => 'forever lost',
+    ];
+
+    private static $under_construction_fg_options = [
+        '#eee' => 'white',
+        '#222' => 'black',
+    ];
+
     protected $sc = null;
 
     public function __construct(SiteConfig $siteConfig)
@@ -213,5 +231,15 @@ class CalculatedValues extends ViewableData
     public function UnderConstructionIsReady() : bool
     {
         return file_exists($this->UnderConstructionFilePath());
+    }
+
+    public function UnderConstructionForegroundColour()
+    {
+        return $this->sc->UnderConstructionForegroundColour ?: '#333';
+    }
+
+    public function UnderConstructionBackgroundColour()
+    {
+        return $this->sc->UnderConstructionBackgroundColour ?: '#333';
     }
 }
