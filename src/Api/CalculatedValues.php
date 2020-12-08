@@ -116,13 +116,14 @@ class CalculatedValues extends ViewableData
         if (! file_exists($dir)) {
             @mkdir($dir);
         }
-        if (file_exists($dir)) {
-            return true;
-        }
-        $this->sc->UnderConstructionOutcome = 'Could not create files for going offline.';
-        $this->sc->write();
+        if (!file_exists($dir)) {
+            $this->sc->UnderConstructionOutcome = 'Could not create files for going offline.';
+            $this->sc->write();
 
-        return false;
+            return false;
+        }
+
+        return true;
     }
 
     /**
