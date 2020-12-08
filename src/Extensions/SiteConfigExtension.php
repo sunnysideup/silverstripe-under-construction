@@ -116,8 +116,8 @@ class SiteConfigExtension extends DataExtension
         );
         if($this->owner->UnderConstructionOnOff === 'Offline') {
             $fields->replaceField(
-                'UnderConstructionOnOff',
-                ReadonlyField::create('UnderConstructionOnOff', 'Allowed IP Addresses')
+                'UnderConstructionExcludedIps',
+                ReadonlyField::create('UnderConstructionExcludedIps', 'Allowed IP Addresses')
                     ->setDescription('This can only be changed when the site is Online.')
             );
         }
@@ -169,7 +169,8 @@ class SiteConfigExtension extends DataExtension
     {
         if (self::$loop_count < 3) {
             self::$loop_count++;
-            if ($this->owner->isChanged('UnderConstructionOnOff')) {
+            // 2 = only real changes.
+            if ($this->owner->isChanged('UnderConstructionOnOff', 2)) {
                 $task = null;
                 if ($this->owner->UnderConstructionOnOff === 'Offline') {
                     $task = Injector::inst()->get(GoOffline::class);
