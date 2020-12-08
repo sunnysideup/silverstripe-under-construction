@@ -154,7 +154,7 @@ class SiteConfigExtension extends DataExtension
     public function onBeforeWrite()
     {
         $currentController = Controller::curr();
-        if ($currentController) {
+        if ($currentController && $currentController->getRequest()) {
             $currentIp = $currentController->getRequest()->getIp();
             $array = explode(',', $this->owner->UnderConstructionExcludedIps);
             $array = array_map('trim', $array);
