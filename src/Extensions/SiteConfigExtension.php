@@ -136,9 +136,10 @@ class SiteConfigExtension extends DataExtension
                     DBField::create_field(
                         'HTMLText',
                         $html
-                    )
+                    ),
                 ),
-            ]
+            ],
+            'UnderConstructionMinutesOffline',
         );
         return $fields;
     }
@@ -164,7 +165,7 @@ class SiteConfigExtension extends DataExtension
                     $array[] = $currentIp;
                 }
             }
-            $this->owner->UnderConstructionExcludedIps = implode(',', $array);
+            $this->owner->UnderConstructionExcludedIps = implode(', ', $array);
         }
     }
 

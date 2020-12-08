@@ -156,6 +156,7 @@ class CalculatedValues extends ViewableData
         $array = explode(',', $this->sc->UnderConstructionExcludedIps);
         $al = ArrayList::create();
         foreach ($array as $ip) {
+            $ip = trim($ip);
             $ipEscaped = str_replace('.', '\\.', $ip);
             $al->push(ArrayData::create(['Ip' => $ip, 'IpEscaped' => $ipEscaped]));
         }
