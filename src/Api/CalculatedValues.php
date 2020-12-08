@@ -117,24 +117,23 @@ class CalculatedValues extends ViewableData
             @mkdir($dir);
         }
         $messages = [];
-        if (!file_exists($dir)) {
-            $messages[] = 'Could not create offline folder ('.$this->UnderConstructionFolderName().').';
+        if (! file_exists($dir)) {
+            $messages[] = 'Could not create offline folder (' . $this->UnderConstructionFolderName() . ').';
         }
         if (! is_writable($dir)) {
-            $messages[] = 'Could not writes files in offline folder ('.$this->UnderConstructionFolderName().').';
-
+            $messages[] = 'Could not writes files in offline folder (' . $this->UnderConstructionFolderName() . ').';
         }
         if (! file_exists($this->getHtAccessPath())) {
-            $messages[] = 'Could not find .htaccess file ('.$this->getHtAccessPath().').';
+            $messages[] = 'Could not find .htaccess file (' . $this->getHtAccessPath() . ').';
         }
         if (! is_writable($this->getHtAccessPath())) {
-            $messages[] = 'Could not write .htaccess file ('.$this->getHtAccessPath().').';
+            $messages[] = 'Could not write .htaccess file (' . $this->getHtAccessPath() . ').';
         }
-        if(! file_exists($this->UnderConstructionFilePath())) {
-            $messages[] = 'Offline file does not exist yet ('.$this->UnderConstructionFilePath().').';
+        if (! file_exists($this->UnderConstructionFilePath())) {
+            $messages[] = 'Offline file does not exist yet (' . $this->UnderConstructionFilePath() . ').';
         }
-        if(! is_writable($this->UnderConstructionFilePath())) {
-            $messages[] = 'Offline file can not be altered ('.$this->UnderConstructionFilePath().').';
+        if (! is_writable($this->UnderConstructionFilePath())) {
+            $messages[] = 'Offline file can not be altered (' . $this->UnderConstructionFilePath() . ').';
         }
         if (count($messages) === 0) {
             $outcome = true;

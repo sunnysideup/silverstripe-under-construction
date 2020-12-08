@@ -4,8 +4,8 @@ namespace Sunnysideup\UnderConstruction\Extensions;
 
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
-use SilverStripe\Control\Director;
 use SilverStripe\Control\Controller;
+use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Injector\Injector;
 
@@ -114,7 +114,7 @@ class SiteConfigExtension extends DataExtension
                     ->setDescription('Was the last action successful? Are there any worries?'),
             ]
         );
-        if($this->owner->UnderConstructionOnOff === 'Offline') {
+        if ($this->owner->UnderConstructionOnOff === 'Offline') {
             $fields->replaceField(
                 'UnderConstructionExcludedIps',
                 ReadonlyField::create('UnderConstructionExcludedIps', 'Allowed IP Addresses')
