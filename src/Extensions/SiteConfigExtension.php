@@ -153,20 +153,24 @@ class SiteConfigExtension extends DataExtension
 
     public function onBeforeWrite()
     {
-        $currentIp = Controller::curr()->getRequest()->getIp();
-        $array = explode(',', $this->owner->UnderConstructionExcludedIps);
-        $array = array_map('trim', $array);
-        $array = array_filter($array);
-        if ($currentIp) {
-            if (! in_array($currentIp, $array, true)) {
-                $array[] = $currentIp;
+        $currentController = Controller::curr();
+        if ($currentController) {
+            $currentIp = $currentController->getRequest()->getIp();
+            $array = explode(',', $this->owner->UnderConstructionExcludedIps);
+            $array = array_map('trim', $array);
+            $array = array_filter($array);
+            if ($currentIp) {
+                if (! in_array($currentIp, $array, true)) {
+                    $array[] = $currentIp;
+                }
             }
+            $this->owner->UnderConstructionExcludedIps = implode(',', $array);
         }
-        $this->owner->UnderConstructionExcludedIps = implode(',', $array);
     }
 
     public function onAfterWrite()
     {
+        $this->CreateFiles();
         if (self::$loop_count < 3) {
             self::$loop_count++;
             // 2 = only real changes.
@@ -181,9 +185,6 @@ class SiteConfigExtension extends DataExtension
                     $this->owner->UnderConstructionOutcome = $task->run(null);
                     $this->owner->write();
                 }
-            }
-            if (! $this->getUnderConstructionCalculatedValues()->UnderConstructionIsReady()) {
-                $this->owner->UnderConstructionOutcome = 'Could not create offline files.';
             }
         }
         register_shutdown_function([$this->owner, 'CreateFiles']);

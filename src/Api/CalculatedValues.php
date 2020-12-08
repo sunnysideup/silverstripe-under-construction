@@ -116,14 +116,36 @@ class CalculatedValues extends ViewableData
         if (! file_exists($dir)) {
             @mkdir($dir);
         }
+        $messages = [];
         if (!file_exists($dir)) {
-            $this->sc->UnderConstructionOutcome = 'Could not create files for going offline.';
-            $this->sc->write();
-
-            return false;
+            $messages[] = 'Could not create offline folder ('.$this->UnderConstructionFolderName().').';
         }
+        if (! is_writable($dir)) {
+            $messages[] = 'Could not writes files in offline folder ('.$this->UnderConstructionFolderName().').';
 
-        return true;
+        }
+        if (! file_exists($this->getHtAccessPath())) {
+            $messages[] = 'Could not find .htaccess file ('.$this->getHtAccessPath().').';
+        }
+        if (! is_writable($this->getHtAccessPath())) {
+            $messages[] = 'Could not write .htaccess file ('.$this->getHtAccessPath().').';
+        }
+        if(! file_exists($this->UnderConstructionFilePath())) {
+            $messages[] = 'Offline file does not exist yet ('.$this->UnderConstructionFilePath().').';
+        }
+        if(! is_writable($this->UnderConstructionFilePath())) {
+            $messages[] = 'Offline file can not be altered ('.$this->UnderConstructionFilePath().').';
+        }
+        if (count($messages) === 0) {
+            $outcome = true;
+            $messages[] = 'All files are in order.';
+        } else {
+            $outcome = false;
+        }
+        $this->sc->UnderConstructionOutcome = implode(' ', $messages);
+        $this->sc->write();
+
+        return $outcome;
     }
 
     /**
@@ -257,5 +279,10 @@ class CalculatedValues extends ViewableData
     public function UnderConstructionBackgroundColour()
     {
         return $this->sc->UnderConstructionBackgroundColour ?: '#333';
+    }
+
+    public function getHtAccessPath(): string
+    {
+        return Controller::join_links(Director::baseFolder(), Director::publicDir(), '.htaccess');
     }
 }

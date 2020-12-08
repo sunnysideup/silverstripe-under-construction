@@ -38,7 +38,8 @@ class GoOffline extends BuildTask
 
     protected function getHtAccessPath(): string
     {
-        return Controller::join_links(Director::baseFolder(), Director::publicDir(), '.htaccess');
+        $siteConfig = SiteConfig::current_site_config();
+        return $siteConfig->getUnderConstructionCalculatedValues()->getHtAccessPath();
     }
 
     protected function getHtAccessContent(): string
