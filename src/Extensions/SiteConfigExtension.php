@@ -153,7 +153,7 @@ class SiteConfigExtension extends DataExtension
 
     public function onBeforeWrite()
     {
-        $currentController = Controller::curr();
+        $currentController = @Controller::curr();
         if ($currentController && $currentController->getRequest()) {
             $currentIp = $currentController->getRequest()->getIp();
             $array = explode(',', $this->owner->UnderConstructionExcludedIps);
@@ -170,9 +170,9 @@ class SiteConfigExtension extends DataExtension
 
     public function onAfterWrite()
     {
-        $this->CreateFiles();
-        if (self::$loop_count < 3) {
+        if (self::$loop_count < 2) {
             self::$loop_count++;
+            $this->CreateFiles();
             // 2 = only real changes.
             if ($this->owner->isChanged('UnderConstructionOnOff', 2)) {
                 $task = null;
