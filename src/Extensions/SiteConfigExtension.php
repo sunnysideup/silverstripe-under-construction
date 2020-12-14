@@ -66,6 +66,11 @@ class SiteConfigExtension extends DataExtension
         $fields->addFieldsToTab(
             'Root.Offline',
             [
+                ReadonlyField::create(
+                    'UnderConstructionOutcome',
+                    'Status ...'
+                )
+                    ->setDescription('Was the last action successful? Are there any worries?'),
                 OptionsetField::create(
                     'UnderConstructionOnOff',
                     'Is the site Online or Offline',
@@ -107,11 +112,7 @@ class SiteConfigExtension extends DataExtension
                     'Text Colour',
                     Config::inst()->get(CalculatedValues::class, 'under_construction_bg_options')
                 ),
-                ReadonlyField::create(
-                    'UnderConstructionOutcome',
-                    'Status ...'
-                )
-                    ->setDescription('Was the last action successful? Are there any worries?'),
+
             ]
         );
         if ($this->owner->UnderConstructionOnOff === 'Offline') {
