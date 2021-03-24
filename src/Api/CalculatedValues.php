@@ -2,7 +2,6 @@
 
 namespace Sunnysideup\UnderConstruction\Api;
 
-use SilverStripe\Assets\Folder;
 use SilverStripe\Assets\Image;
 
 use SilverStripe\Control\Controller;
@@ -112,10 +111,7 @@ class CalculatedValues extends ViewableData
     public function CreateDirAndTest(): bool
     {
         $dir = dirname($this->UnderConstructionFilePath());
-        Folder::find_or_make('../' . $this->UnderConstructionFolderName());
-        if (! file_exists($dir)) {
-            @mkdir($dir);
-        }
+        @mkdir($dir);
         $messages = [];
         if (! file_exists($dir)) {
             $messages[] = 'Could not create offline folder (' . $this->UnderConstructionFolderName() . ').';
