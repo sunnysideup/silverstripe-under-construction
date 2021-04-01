@@ -162,7 +162,6 @@ class CalculatedValues extends ViewableData
 
     /**
      * something like /var/www/mysite/public/offline/offline.php
-     * @return string
      */
     public function UnderConstructionFilePath(): string
     {
@@ -176,7 +175,6 @@ class CalculatedValues extends ViewableData
 
     /**
      * something like https://mysite.com/offline/offline.php.
-     * @return string
      */
     public function UnderConstructionUrlPath(): string
     {
@@ -189,7 +187,6 @@ class CalculatedValues extends ViewableData
 
     /**
      * something like /var/www/mysite/public/offline/offline.php.img
-     * @return string
      */
     public function UnderConstructionImagePath(): string
     {
@@ -200,7 +197,6 @@ class CalculatedValues extends ViewableData
 
     /**
      * something like offline
-     * @return string
      */
     public function UnderConstructionFolderName(): string
     {
@@ -209,7 +205,6 @@ class CalculatedValues extends ViewableData
 
     /**
      * something like offline
-     * @return string
      */
     public function UnderConstructionFileName(): string
     {
@@ -218,7 +213,6 @@ class CalculatedValues extends ViewableData
 
     /**
      * something like offline.php.png.
-     * @return string
      */
     public function UnderConstructionImageName(): string
     {
@@ -231,7 +225,6 @@ class CalculatedValues extends ViewableData
 
     /**
      * something like offline.php.png.
-     * @return string
      */
     public function UnderConstructionOriginalImagePath(): string
     {
