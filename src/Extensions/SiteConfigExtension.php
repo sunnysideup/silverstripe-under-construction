@@ -58,7 +58,7 @@ class SiteConfigExtension extends DataExtension
         'UnderConstructionImage',
     ];
 
-    private $underConstructionCalculatedValues = null;
+    private $underConstructionCalculatedValues;
 
     public function updateCMSFields(FieldList $fields)
     {
@@ -173,7 +173,7 @@ class SiteConfigExtension extends DataExtension
     public function onAfterWrite()
     {
         if (self::$loop_count < 2) {
-            self::$loop_count++;
+            ++self::$loop_count;
             $this->CreateFiles();
             // 2 = only real changes.
             if ($this->owner->isChanged('UnderConstructionOnOff', 2)) {

@@ -26,11 +26,17 @@ use Sunnysideup\UnderConstruction\Tasks\GoOnline;
 
 class CalculatedValues extends ViewableData
 {
+    /**
+     * @var string
+     */
     private const UNDER_CONSTRUCTION_FOLDER_NAME = 'offline';
 
+    /**
+     * @var string
+     */
     private const UNDER_CONSTRUCTION_FILE_NAME = 'offline.php';
 
-    protected $sc = null;
+    protected $sc;
 
     private static $under_construction_bg_options = [
         '#000' => 'black',
