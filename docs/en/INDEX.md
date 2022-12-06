@@ -1,24 +1,23 @@
-Go to the siteconfig, choose your settings and save.
+This module only works in apache!
 
-Then set up a .htaccess file to redirect all traffic.
+To try it out, install and go to the siteconfig, open the `offline tab`, choose your settings and save.
 
-Add to `.htacces` file in public folder:
+You can put your site in offline and in online mode from here.
+
+It ...
+
+1. creates offline file.
+
+2. adds the following to your `.htacces` file in public folder:
 
 ```.htaccess
 Options +FollowSymlinks
 
 RewriteEngine on
 
-RewriteCond %{REMOTE_ADDR} !=123.45.67.89
-RewriteCond %{REQUEST_URI} !^\/offline\.php|\/offline\.jpg
+RewriteCond %{REMOTE_ADDR} !^123.45.67.89 
+RewriteCond %{REQUEST_URI} !^\/offline/
 
-RewriteRule .* /offline.php [R=302,L]
+RewriteRule .* /offline/offline.php [R=302,L]
 ```
-make sure to replace 123.45.67.89 with your own ip address ..
-
-Add to `robots.txt`:
-
-```.txt
-User-agent: *
-Disallow: /offline.php
-```
+Where 123.45.67.89 is your ip address ..
