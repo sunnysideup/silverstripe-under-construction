@@ -78,7 +78,7 @@ class CalculatedValues extends ViewableData
         return '/dev/tasks/' . Config::inst()->get(GoOnline::class, 'segment');
     }
 
-    public function getSiteConfig() :SiteConfig
+    public function getSiteConfig(): SiteConfig
     {
         return $this->sc;
     }
@@ -97,22 +97,22 @@ class CalculatedValues extends ViewableData
         $dir = dirname($this->UnderConstructionFilePath());
         @mkdir($dir);
         $messages = [];
-        if (! file_exists($dir)) {
+        if (!file_exists($dir)) {
             $messages[] = 'Could not create offline folder (' . $this->UnderConstructionFolderName() . ').';
         }
-        if (! is_writable($dir)) {
+        if (!is_writable($dir)) {
             $messages[] = 'Could not writes files in offline folder (' . $this->UnderConstructionFolderName() . ').';
         }
-        if (! file_exists($this->getHtAccessPath())) {
+        if (!file_exists($this->getHtAccessPath())) {
             $messages[] = 'Could not find .htaccess file (' . $this->getHtAccessPath() . ').';
         }
-        if (! is_writable($this->getHtAccessPath())) {
+        if (!is_writable($this->getHtAccessPath())) {
             $messages[] = 'Could not write .htaccess file (' . $this->getHtAccessPath() . ').';
         }
-        if (! file_exists($this->UnderConstructionFilePath())) {
+        if (!file_exists($this->UnderConstructionFilePath())) {
             $messages[] = 'Offline file does not exist yet (' . $this->UnderConstructionFilePath() . ').';
         }
-        if (! is_writable($this->UnderConstructionFilePath())) {
+        if (!is_writable($this->UnderConstructionFilePath())) {
             $messages[] = 'Offline file can not be altered (' . $this->UnderConstructionFilePath() . ').';
         }
         if (count($messages) === 0) {
@@ -230,7 +230,7 @@ class CalculatedValues extends ViewableData
     {
         // SSViewer::config()->update('theme_enabled', true);
         Requirements::clear();
-        SSViewer::config()->update('source_file_comments', false);
+        Config::modify()->set(SSViewer::class, 'source_file_comments', false);
         $txt = $this->renderWith('Sunnysideup\\UnderConstruction\\UnderConstructionHtAccess');
         // SSViewer::config()->update('theme_enabled', false);
 
@@ -262,7 +262,7 @@ class CalculatedValues extends ViewableData
     public function CreateFilesInner()
     {
         // SSViewer::config()->update('theme_enabled', false);
-        SSViewer::config()->update('source_file_comments', false);
+        Config::modify()->set(SSViewer::class, 'source_file_comments', false);
         Requirements::clear();
         $html = $this->renderWith('Sunnysideup\\UnderConstruction\\UnderConstructionPage');
         // SSViewer::config()->update('theme_enabled', false);
