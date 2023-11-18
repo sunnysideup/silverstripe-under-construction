@@ -58,7 +58,7 @@ class SiteConfigExtension extends DataExtension
         'UnderConstructionImage',
     ];
 
-    public function UnderConstructionMinutesOfflineAlwaysInt() : int
+    public function UnderConstructionMinutesOfflineAlwaysInt(): int
     {
         return intval($this->getOwner()->UnderConstructionMinutesOffline) ? $this->getOwner()->UnderConstructionMinutesOffline : 20;
     }
@@ -163,11 +163,11 @@ class SiteConfigExtension extends DataExtension
         $currentController = @Controller::curr();
         if ($currentController && $currentController->getRequest()) {
             $currentIp = $currentController->getRequest()->getIp();
-            $array = explode(',', $this->owner->UnderConstructionExcludedIps);
+            $array = explode(',', (string) $this->owner->UnderConstructionExcludedIps);
             $array = array_map('trim', $array);
             $array = array_filter($array);
             if ($currentIp) {
-                if (! in_array($currentIp, $array, true)) {
+                if (!in_array($currentIp, $array, true)) {
                     $array[] = $currentIp;
                 }
             }
@@ -204,7 +204,7 @@ class SiteConfigExtension extends DataExtension
 
     public function requireDefaultRecords()
     {
-        if (! Director::is_cli()) {
+        if (!Director::is_cli()) {
             $this->getUnderConstructionCalculatedValues()->CreateDirAndTest();
         }
     }
